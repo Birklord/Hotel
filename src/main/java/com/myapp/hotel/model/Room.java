@@ -8,16 +8,24 @@ import java.util.Set;
 @Data
 @Entity
 public class Room {
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private Set<Reservation> reservations;
+   @ManyToOne
+   @JoinColumn
+   private Reservation reservations;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
     private String number;
     private String status;
+    private String categoryName;
+    private Integer categoryAmount;
 
+   // @ManyToOne
+   // private Set<Reservation> reservations;
+
+   // @OneToOne(mappedBy = "reservation")
+  //  @JoinColumn
+  //  private Set<Reservation> reservations;
 
 
 }

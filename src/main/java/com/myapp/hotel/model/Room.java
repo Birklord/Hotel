@@ -3,7 +3,6 @@ package com.myapp.hotel.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Entity
@@ -15,6 +14,8 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+
     private String number;
     private String status;
     private String categoryName;

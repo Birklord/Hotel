@@ -1,11 +1,9 @@
 package com.myapp.hotel.model;
 
 import lombok.Data;
-import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 @Data
 @Entity

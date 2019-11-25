@@ -16,7 +16,7 @@ public interface CustomerService {
 
      public Boolean addCustomer(CustomerRequest customerRequest);
 
-     public List<Customer> getAllCustomer();
+     public Optional<Customer> findCustomerById(Long id);
 
-     public Optional<Customer> getCustomerById(Long id);
+     List<Customer> findAllCustomer();
 }

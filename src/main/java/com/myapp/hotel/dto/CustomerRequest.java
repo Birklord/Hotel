@@ -2,11 +2,10 @@ package com.myapp.hotel.dto;
 
 import lombok.Data;
 
-import javax.persistence.PersistenceContext;
+
 import javax.validation.constraints.NotNull;
 
 @Data
-@PersistenceContext
 public class CustomerRequest {
     private  Long id;
     @NotNull

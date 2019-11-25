@@ -38,19 +38,37 @@ public class CustomerServiceImpl implements CustomerService {
         catch (Exception ex){
             saved=false;
             ex.printStackTrace();
-            logger.info("This didn't save");
+            logger.severe("This didn't save");
             }
         return saved;
     }
 
     @Override
-    public List<Customer> getAllCustomer() {
-        return null;
+    public List<Customer> findAllCustomer() {
+
+        try{
+
+            customerRepository.findAll();
+            logger.info("found");
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Not found");
+        }
+     return customerRepository.findAll();
     }
 
     @Override
-    public Optional<Customer> getCustomerById(Long id) {
-        return Optional.empty();
+    public Optional<Customer> findCustomerById(Long id) {
+        try{
+            customerRepository.findById(id);
+            logger.info("found");
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Not found");
+        }
+        return customerRepository.findById(id);
     }
 
 

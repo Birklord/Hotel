@@ -4,9 +4,11 @@ package com.myapp.hotel.api;
 import com.myapp.hotel.dto.CustomerRequest;
 import com.myapp.hotel.model.Customer;
 
+import com.myapp.hotel.repository.CustomerRepository;
 import com.myapp.hotel.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PersistenceContext;
@@ -17,6 +19,8 @@ import java.util.List;
 @RequestMapping("api/v1/customer")
 @RestController
 public class CustomerController {
+    //@Autowired
+  //  CustomerRepository customerRepository;
 
     @Autowired
     private final CustomerService customerService;
@@ -30,35 +34,16 @@ public class CustomerController {
        return isSaved;
     }
 
-    @GetMapping
+    @GetMapping("/retrieveall")
     public List<Customer> getAllCustomers() {
-        return customerService.getAllCustomer();
+        return customerService.findAllCustomer();
     }
 
-    @GetMapping(path="{id}")
+    @GetMapping("/retrievebyid/{id}")
     public Customer getCustomerById(@PathVariable("id") Long id){
-        return customerService.getCustomerById(id)
+        return customerService.findCustomerById(id)
                 .orElse(null);
-    }
-/*
-    @GetMapping
-    public List<Customer> getDeleteCustomer(){
-        return customerService.getAllCustomer();
     }
 
-    @GetMapping(path="{id}")
-    public Person getPersonById(@PathVariable("id") UUID id){
-        return personService.getPersonById(id)
-                .orElse(null);
-    }
-    @DeleteMapping(path = "{id}")
-    public void deletePersonById(@PathVariable("id")UUID id){
-        personService.deletePerson(id);
-    }
-    @PutMapping(path="{id}")
-    public void updatePerson(@PathVariable("id") UUID id, @Valid @RequestBody Person personToUpdate){
-        personService.updatePerson(id, personToUpdate);
-    }
-    */
 
 }

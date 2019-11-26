@@ -47,7 +47,6 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> findAllCustomer() {
 
         try{
-
             customerRepository.findAll();
             logger.info("found");
         }

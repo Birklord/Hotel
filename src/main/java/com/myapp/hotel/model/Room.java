@@ -12,21 +12,15 @@ public class Room {
    private Reservation reservations;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 
-    private String number;
+    private String roomNumber;
     private String status;
     private String categoryName;
-    private Integer categoryAmount;
+    private Long categoryAmount;
 
-   // @ManyToOne
-   // private Set<Reservation> reservations;
-
-   // @OneToOne(mappedBy = "reservation")
-  //  @JoinColumn
-  //  private Set<Reservation> reservations;
 
 
 }

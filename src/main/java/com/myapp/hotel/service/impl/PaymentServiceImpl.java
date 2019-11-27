@@ -36,6 +36,7 @@ public  class PaymentServiceImpl implements PaymentService {
         catch(Exception e){
             saved=false;
             e.printStackTrace();
+            e.getMessage();
             logger.severe("failed");
         }
         return saved;
@@ -49,6 +50,7 @@ public  class PaymentServiceImpl implements PaymentService {
             logger.info("Success");
         }catch(Exception e){
             e.printStackTrace();
+            e.getMessage();
             logger.severe("failed");
         }
         return paymentRepository.findById(id);
@@ -61,6 +63,7 @@ public  class PaymentServiceImpl implements PaymentService {
             logger.info("Success");
         }catch(Exception e){
             e.printStackTrace();
+            e.getMessage();
             logger.severe("failed");
         }
         return paymentRepository.findAll();

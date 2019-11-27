@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class Room {
+public class Room   {
    @ManyToOne
    @JoinColumn
    private Reservation reservations;

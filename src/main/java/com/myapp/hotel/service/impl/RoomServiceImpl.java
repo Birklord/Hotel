@@ -34,6 +34,7 @@ public class RoomServiceImpl implements RoomService {
             logger.info("Success");
         }catch(Exception e){
             e.printStackTrace();
+            e.getMessage();
             logger.severe("failed");
         }
 
@@ -48,6 +49,7 @@ public class RoomServiceImpl implements RoomService {
         }
         catch(Exception e){
             e.printStackTrace();
+            e.getMessage();
             logger.severe("Not found");
         }
         return roomRepository.findById(id);
@@ -61,6 +63,7 @@ public class RoomServiceImpl implements RoomService {
         }
         catch(Exception e){
             e.printStackTrace();
+            e.getMessage();
             logger.severe("Not found");
         }
         return roomRepository.findAll();

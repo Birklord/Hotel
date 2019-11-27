@@ -31,9 +31,9 @@ public class PaymentController {
         return paymentService.findAllPayment();
     }
 
-    @GetMapping("/retrievebyid/{id}")
+    @GetMapping(path = "{id}")
     public Payment getPaymentById(@PathVariable("id") Long id) {
-        return paymentService.findPaymentById()
+        return paymentService.findPaymentById(id)
                 .orElse(null);
     }
 

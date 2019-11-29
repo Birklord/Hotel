@@ -1,6 +1,7 @@
 package com.myapp.hotel.api;
 
 
+import com.myapp.hotel.dto.BaseModel;
 import com.myapp.hotel.dto.CustomerRequest;
 import com.myapp.hotel.dto.ResponseModel;
 import com.myapp.hotel.exception.CustomerNotAddedException;
@@ -48,8 +49,8 @@ public class CustomerController {
     public ResponseModel getAllCustomers() {
         ResponseModel responseModel = new ResponseModel();
         try{
-            List<Customer> customerList = customerService.findAllCustomer();
-            responseModel.data.addAll(customerList);
+            List<BaseModel> customerList = customerService.findAllCustomer();
+            //responseModel.data.addAll(customerList);
             responseModel.setData(customerList);
             responseModel.setResponseCode("00");
             responseModel.setValid(true);
@@ -63,29 +64,32 @@ public class CustomerController {
             responseModel.setResponseMessage("Failure fetching customers");
             logger.severe("Failure fetching customers");
         }
-        customerService.findAllCustomer();
 
         return responseModel;
     }
 
     @GetMapping("/retrievebyid/{id}")
-    public ResponseModel getCustomerById(@PathVariable("id") Long id){
+    public ResponseModel getCustomerById(@PathVariable("id") Long id) {
         ResponseModel responseModel = new ResponseModel();
-        try{
-            customerService.findCustomerById(id).get();
-            responseModel.setResponseCode("00");
-            responseModel.setValid(true);
-            responseModel.setResponseMessage("Success fetching customers");}
-        catch(Exception e){
-            e.printStackTrace();
+         try {
+
+             if (id != null) {
+                 responseModel.getData().add(customerService.findCustomerById(id));
+                 responseModel.setResponseCode("00");
+                 responseModel.setValid(true);
+                 responseModel.setResponseMessage("Success fetching customers");
+             }
+         }
+             catch(Exception e){
+              e.printStackTrace();
             e.getMessage();
             responseModel.setData(null);
             responseModel.setResponseCode("99");
             responseModel.setValid(false);
             responseModel.setResponseMessage("Failure fetching customers");
             logger.severe("Failure fetching customers");
-        }
-        customerService.findCustomerById(id);
+
+    }
         return responseModel;
     }
 

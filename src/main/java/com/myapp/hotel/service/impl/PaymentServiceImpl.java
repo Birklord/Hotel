@@ -1,5 +1,6 @@
 package com.myapp.hotel.service.impl;
 
+import com.myapp.hotel.dto.BaseModel;
 import com.myapp.hotel.dto.PaymentRequest;
 import com.myapp.hotel.model.Payment;
 import com.myapp.hotel.repository.PaymentRepository;
@@ -8,6 +9,7 @@ import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -24,9 +26,7 @@ public  class PaymentServiceImpl implements PaymentService {
     }
     @Override
     public Boolean addPayment(PaymentRequest paymentRequest) {
-
-
-        Payment payment = mapper.map(paymentRequest,Payment.class);
+        Payment payment = mapper.map(paymentRequest, Payment.class);
         Boolean saved=false;
         try{
            paymentRepository.save(payment);
@@ -42,24 +42,36 @@ public  class PaymentServiceImpl implements PaymentService {
         return saved;
     }
 
+    @Override
+    public PaymentRequest convertToDto(Payment payment){
+        PaymentRequest paymentRequest = new PaymentRequest();
+        paymentRequest.setId(payment.getId());
+        paymentRequest.setPaymentDate(payment.getPaymentDate());
+        return paymentRequest;
+    }
 
     @Override
-    public Optional<Payment> findPaymentById(Long id) {
+    public BaseModel findPaymentById(Long id) {
+
         try{
-            paymentRepository.findById(id);
-            logger.info("Success");
+            Optional<Payment> payment = PaymentRepository.findById(id);
+            if(payment.get()!= null){
+                return convertToDto(payment.get());
+            }logger.info("Success");
         }catch(Exception e){
             e.printStackTrace();
             e.getMessage();
             logger.severe("failed");
         }
-        return paymentRepository.findById(id);
+       return null;
     }
 
     @Override
-    public List<Payment> findAllPayment() {
+    public List<BaseModel> findAllPayment() {
+
+        List<BaseModel> responseData = new ArrayList<>();
         try{
-            paymentRepository.findAll();
+            paymentRepository.findAll().stream().forEach(payment-> responseData.add(convertToDto((Payment) payment)));
             logger.info("Success");
         }catch(Exception e){
             e.printStackTrace();
@@ -69,3 +81,5 @@ public  class PaymentServiceImpl implements PaymentService {
         return paymentRepository.findAll();
     }
 }
+
+

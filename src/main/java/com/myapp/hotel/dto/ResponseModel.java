@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class ResponseModel {
     private boolean valid;
-    public List<Customer> data = new ArrayList<Customer>();
+    public List<BaseModel> data = new ArrayList<>();
     private String responseCode;
     private String responseMessage;
 
@@ -20,11 +20,11 @@ public class ResponseModel {
         this.valid = valid;
     }
 
-    public List<Customer> getData() {
+    public List<BaseModel> getData() {
         return data;
     }
 
-    public void setData(List<Customer> data) {
+    public void setData(List<BaseModel> data) {
         this.data = data;
     }
 

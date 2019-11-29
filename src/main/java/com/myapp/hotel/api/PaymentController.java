@@ -1,8 +1,9 @@
 package com.myapp.hotel.api;
 
 
+import com.myapp.hotel.dto.BaseModel;
 import com.myapp.hotel.dto.PaymentRequest;
-import com.myapp.hotel.model.Payment;
+import com.myapp.hotel.dto.ResponseModel;
 import com.myapp.hotel.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.logging.Logger;
+
 @RequestMapping("api/v1/payment")
 @RestController
 public class PaymentController {
     @Autowired
     private final PaymentService paymentService;
+    static Logger logger = Logger.getLogger(String.valueOf(PaymentController.class));
 
     public PaymentController(PaymentService paymentService) {
         this.paymentService = paymentService;
@@ -27,14 +31,49 @@ public class PaymentController {
     }
 
     @GetMapping("/retrieveall")
-    public List<Payment> getAllPayments() {
-        return paymentService.findAllPayment();
+    public ResponseModel getAllPayments() {
+        ResponseModel responseModel = new ResponseModel();
+        try{
+            List<BaseModel> paymentList = paymentService.findAllPayment();
+            //responseModel.data.addAll(customerList);
+            responseModel.setData(paymentList);
+            responseModel.setResponseCode("00");
+            responseModel.setValid(true);
+            responseModel.setResponseMessage("Success fetching customers");}
+        catch(Exception e){
+            e.printStackTrace();
+            e.getMessage();
+            responseModel.setData(null);
+            responseModel.setResponseCode("99");
+            responseModel.setValid(false);
+            responseModel.setResponseMessage("Failure fetching customers");
+            logger.severe("Failure fetching customers");
+        }
+
+        return responseModel;
     }
 
     @GetMapping(path = "{id}")
-    public Payment getPaymentById(@PathVariable("id") Long id) {
-        return paymentService.findPaymentById(id)
-                .orElse(null);
+    public ResponseModel getPaymentById(@PathVariable("id") Long id) {
+        ResponseModel responseModel = new ResponseModel();
+        try {
+                responseModel.getData().add(paymentService.findPaymentById(id));
+                responseModel.setResponseCode("00");
+                responseModel.setValid(true);
+                responseModel.setResponseMessage("Success fetching customers");
+                logger.info("Succes fetching payment");
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            e.getMessage();
+            responseModel.setData(null);
+            responseModel.setResponseCode("99");
+            responseModel.setValid(false);
+            responseModel.setResponseMessage("Failure fetching customers");
+            logger.severe("Failure fetching payment");
+
+        }
+        return responseModel;
     }
 
 }

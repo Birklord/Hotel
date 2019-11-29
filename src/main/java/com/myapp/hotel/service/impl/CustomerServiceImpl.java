@@ -18,16 +18,12 @@ import java.util.logging.Logger;
 @Service
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
-    private final CustomerRepository customerRepository;
-    @Autowired
-    private final CustomerService customerService;
+    private  CustomerRepository customerRepository;
 
     private final Mapper mapper;
     static Logger logger = Logger.getLogger(String.valueOf(CustomerServiceImpl.class));
 
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerService customerService, Mapper mapper) {
-        this.customerRepository = customerRepository;
-        this.customerService = customerService;
+    public CustomerServiceImpl(Mapper mapper) {
         this.mapper = mapper;
     }
 
@@ -60,12 +56,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> findAllCustomer() {
-
+    public List<BaseModel> findAllCustomer() {
+        List<BaseModel> responseData = new ArrayList<>();
         try{
-
-            List<BaseModel> responseData = new ArrayList<BaseModel>();
-            customerService.findAllCustomer().stream().forEach(customer -> responseData.add(customerService.convertToDto(customer)));
+            customerRepository.findAll().stream().forEach(customer -> responseData.add(convertToDto((Customer) customer)));
             logger.info("found");
         }
         catch(Exception e){
@@ -73,13 +67,16 @@ public class CustomerServiceImpl implements CustomerService {
             e.getMessage();
             logger.severe("Not found");
         }
-     return customerRepository.findAll();
+     return responseData;
     }
 
     @Override
-    public Optional<Customer> findCustomerById(Long id) {
+    public BaseModel findCustomerById(Long id) {
         try{
-            customerService.findCustomerById(id);
+            Optional<Customer> customer = customerRepository.findById(id);
+            if(customer.get()!= null){
+                return convertToDto(customer.get());
+            }
             logger.info("found");
         }
         catch(Exception e){
@@ -87,7 +84,7 @@ public class CustomerServiceImpl implements CustomerService {
             e.getMessage();
             logger.severe("Not found");
         }
-        return customerRepository.findById(id);
+        return null;
     }
 
 

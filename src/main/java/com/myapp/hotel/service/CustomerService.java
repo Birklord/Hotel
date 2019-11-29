@@ -13,9 +13,9 @@ public interface CustomerService {
 
      public Boolean addCustomer(CustomerRequest customerRequest);
 
-     public Optional<Customer> findCustomerById(Long id);
+     public BaseModel findCustomerById(Long id);
 
-     List<Customer> findAllCustomer();
+     List<BaseModel> findAllCustomer();
 
      CustomerRequest convertToDto(Customer customer);
 }

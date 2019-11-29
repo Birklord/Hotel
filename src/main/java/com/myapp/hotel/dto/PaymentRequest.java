@@ -1,12 +1,17 @@
 package com.myapp.hotel.dto;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+@Data
+public class PaymentRequest extends BaseModel{
 
-public class PaymentRequest {
 
     private  Long id;
     @NotNull
     private Date paymentDate;
+
+
 }
 

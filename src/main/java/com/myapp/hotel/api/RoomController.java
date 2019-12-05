@@ -1,6 +1,7 @@
 package com.myapp.hotel.api;
 
 
+import com.myapp.hotel.dto.BaseModel;
 import com.myapp.hotel.dto.RoomRequest;
 import com.myapp.hotel.model.Room;
 import com.myapp.hotel.service.RoomService;
@@ -26,11 +27,12 @@ public class RoomController {
         return isSaved;
     }
     @GetMapping("/retrieveall")
-    public List<Room> getAllRoom(){
+    public List<BaseModel> getAllRoom(){
         return roomService.findAllRoom();
     }
-    @GetMapping(path = "{id}")
-    public Optional<Room> getRoomById(Long id){
+
+    @GetMapping("retrieve/{id}")
+    public Optional<Room> getRoomById(@PathVariable{id} Long id){
         return roomService.findRoomById(id);
     }
 }

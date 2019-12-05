@@ -29,14 +29,10 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = mapper.map(reservationRequest,Reservation.class);
         Boolean saved=false;
        try{
-           reservationRepository.save(reservation);
-           saved = true;
-           logger.info("success");
+           reservationRepository.save(reservation); saved = true; logger.info("success");
         }
        catch(Exception e){
-       saved=false;
-       e.printStackTrace();
-       logger.severe("failed");
+       saved=false; e.printStackTrace(); logger.severe("failed");
        }
        return saved;
     }
@@ -44,12 +40,10 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Optional<Reservation> findReservationById(Long id) {
             try{
-                reservationRepository.findById(id);
-                logger.info("found");
+                reservationRepository.findById(id); logger.info("found");
             }
             catch(Exception e){
-                e.printStackTrace();
-                logger.severe("Not found");
+                e.printStackTrace(); logger.severe("Not found");
             }
             return reservationRepository.findById(id);
     }
@@ -61,8 +55,7 @@ public class ReservationServiceImpl implements ReservationService {
             logger.info("found");
         }
         catch(Exception e){
-            e.printStackTrace();
-            logger.severe("Not found");
+            e.printStackTrace(); logger.severe("Not found");
         }
         return reservationRepository.findAll();
     }

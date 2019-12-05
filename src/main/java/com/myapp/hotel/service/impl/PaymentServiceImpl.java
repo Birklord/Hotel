@@ -34,10 +34,7 @@ public  class PaymentServiceImpl implements PaymentService {
             logger.info("success");
         }
         catch(Exception e){
-            saved=false;
-            e.printStackTrace();
-            e.getMessage();
-            logger.severe("failed");
+            saved=false; e.printStackTrace(); e.getMessage(); logger.severe("failed");
         }
         return saved;
     }
@@ -46,7 +43,8 @@ public  class PaymentServiceImpl implements PaymentService {
     public PaymentRequest convertToDto(Payment payment){
         PaymentRequest paymentRequest = new PaymentRequest();
         paymentRequest.setId(payment.getId());
-        paymentRequest.setPaymentDate(payment.getPaymentDate());
+        paymentRequest.setTransactionDate(payment.getTransactionDate());
+        paymentRequest.setTransactionAmount(payment.getTransactionAmount());
         return paymentRequest;
     }
 
@@ -54,14 +52,13 @@ public  class PaymentServiceImpl implements PaymentService {
     public BaseModel findPaymentById(Long id) {
 
         try{
-            Optional<Payment> payment = PaymentRepository.findById(id);
+            Optional<Payment> payment = paymentRepository.findById(id);
             if(payment.get()!= null){
                 return convertToDto(payment.get());
-            }logger.info("Success");
+            }
+            logger.info("Success");
         }catch(Exception e){
-            e.printStackTrace();
-            e.getMessage();
-            logger.severe("failed");
+            e.printStackTrace(); e.getMessage(); logger.severe("failed");
         }
        return null;
     }
@@ -74,9 +71,7 @@ public  class PaymentServiceImpl implements PaymentService {
             paymentRepository.findAll().stream().forEach(payment-> responseData.add(convertToDto((Payment) payment)));
             logger.info("Success");
         }catch(Exception e){
-            e.printStackTrace();
-            e.getMessage();
-            logger.severe("failed");
+            e.printStackTrace(); e.getMessage(); logger.severe("failed");
         }
         return paymentRepository.findAll();
     }

@@ -53,7 +53,7 @@ public class PaymentController {
         return responseModel;
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping("retrievebyid/{id}")
     public ResponseModel getPaymentById(@PathVariable("id") Long id) {
         ResponseModel responseModel = new ResponseModel();
         try {

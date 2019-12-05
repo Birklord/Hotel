@@ -1,5 +1,6 @@
 package com.myapp.hotel.service.impl;
 
+import com.myapp.hotel.dto.BaseModel;
 import com.myapp.hotel.dto.RoomRequest;
 import com.myapp.hotel.model.Room;
 import com.myapp.hotel.repository.RoomRepository;
@@ -56,7 +57,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<Room> findAllRoom() {
+    public List<BaseModel> findAllRoom() {
         try{
             roomRepository.findAll();
             logger.info("found");

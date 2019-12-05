@@ -3,7 +3,7 @@ package com.myapp.hotel.dto;
 
 import javax.validation.constraints.NotNull;
 
-public class RoomRequest {
+public class RoomRequest extends BaseModel{
     private Long id;
     @NotNull
     private String roomNumber;

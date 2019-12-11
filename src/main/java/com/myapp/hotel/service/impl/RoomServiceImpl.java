@@ -1,6 +1,5 @@
 package com.myapp.hotel.service.impl;
 
-import com.myapp.hotel.dto.BaseModel;
 import com.myapp.hotel.dto.RoomRequest;
 import com.myapp.hotel.model.Room;
 import com.myapp.hotel.repository.RoomRepository;
@@ -43,6 +42,26 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public RoomRequest convertToDto(Room room) {
+        RoomRequest roomRequest = new RoomRequest();
+        roomRequest.setCategoryName(room.getRoomType());
+        roomRequest.setCategoryAmount(room.getRoomTypeAmount());
+        roomRequest.setRoomNumber(room.getRoomNumber());
+        roomRequest.setRoomFloor(room.getRoomFloor());
+        return roomRequest;
+    }
+    @Override
+    public List<Room> findByNoOfOccupants(int value){
+            if(value == 0)
+                return null;
+            if(value == 1 ) {
+                value = 2;
+            }
+            List<Room> availableRoomForNumber = roomRepository.occupantCheck(value);
+            return availableRoomForNumber;
+    }
+
+    @Override
     public Optional<Room> findRoomById(Long id) {
         try{
             roomRepository.findById(id);
@@ -57,7 +76,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<BaseModel> findAllRoom() {
+    public List<Room> findAllRoom() {
         try{
             roomRepository.findAll();
             logger.info("found");
@@ -69,4 +88,5 @@ public class RoomServiceImpl implements RoomService {
         }
         return roomRepository.findAll();
     }
+
 }

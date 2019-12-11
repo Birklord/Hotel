@@ -18,8 +18,10 @@ public class Room   {
 
     private String roomNumber;
     private String status;
-    private String categoryName;
-    private Long categoryAmount;
+    private String roomType;
+    private Long roomTypeAmount;
+    private String roomFloor;
+    public int maximum;
 
 
 

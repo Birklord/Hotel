@@ -1,8 +1,10 @@
 package com.myapp.hotel.dto;
 
 
-import javax.validation.constraints.NotNull;
+import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+@Data
 public class RoomRequest extends BaseModel{
     private Long id;
     @NotNull
@@ -11,4 +13,6 @@ public class RoomRequest extends BaseModel{
     private Long categoryAmount;
     @NotNull
     private String categoryName;
+    @NotNull
+    private String roomFloor;
 }

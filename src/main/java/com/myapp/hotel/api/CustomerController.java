@@ -5,7 +5,6 @@ import com.myapp.hotel.dto.BaseModel;
 import com.myapp.hotel.dto.CustomerRequest;
 import com.myapp.hotel.dto.ResponseModel;
 import com.myapp.hotel.exception.CustomerNotAddedException;
-import com.myapp.hotel.model.Customer;
 import com.myapp.hotel.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -44,6 +43,7 @@ public class CustomerController {
     public String handleCustomerNotAddedException(CustomerNotAddedException exception){
         return exception.getMessage();
     }
+
 
     @GetMapping("retrieveall")
     public ResponseModel getAllCustomers() {

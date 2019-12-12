@@ -11,4 +11,5 @@ public interface ReservationService {
     public Boolean addReservation(ReservationRequest reservationRequest);
     public Optional<Reservation> findReservationById(Long id);
     List<Reservation> findAllReservation();
+    public ReservationRequest convertToDto(Reservation reservation);
 }

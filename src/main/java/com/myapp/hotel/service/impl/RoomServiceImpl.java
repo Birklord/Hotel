@@ -6,6 +6,8 @@ import com.myapp.hotel.repository.RoomRepository;
 import com.myapp.hotel.service.RoomService;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,14 +53,21 @@ public class RoomServiceImpl implements RoomService {
         return roomRequest;
     }
     @Override
-    public List<Room> findByNoOfOccupants(int value){
+    public List<Room> findByNoOfOccupants(int value, int page, int size){
+
             if(value == 0)
                 return null;
-            if(value == 1 ) {
+            if((value == 1)||(value == 2)) {
                 value = 2;
+                Pageable pageable = (Pageable) PageRequest.of(page, size);
+                return roomRepository.occupantCheck(pageable);
             }
-            List<Room> availableRoomForNumber = roomRepository.occupantCheck(value);
-            return availableRoomForNumber;
+            else if(value>=2){
+
+                Pageable pageable = (Pageable) PageRequest.of(page, size);
+                return roomRepository.occupantAnalyzer(value, pageable);
+            }
+        return roomRepository.findAll();
     }
 
     @Override

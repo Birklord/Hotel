@@ -5,6 +5,7 @@ import com.myapp.hotel.dto.ResponseModel;
 import com.myapp.hotel.dto.RoomRequest;
 import com.myapp.hotel.model.Room;
 import com.myapp.hotel.service.RoomService;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,10 +38,10 @@ public class RoomController {
         return isSaved;
     }
     @GetMapping("/roomsearch/{value}")
-    public ResponseModel determineRoomByNoOfOccupants(@PathVariable int value){
+    public ResponseModel determineRoomByNoOfOccupants(@PathVariable int value, @Param("page") int page, @Param("size") int size){
         ResponseModel responseModel = new ResponseModel();
 //        try {
-            List<Room> roomList = roomService.findByNoOfOccupants(value);
+            List<Room> roomList = roomService.findByNoOfOccupants(value, page, size);
 
                 responseModel.setInfo(roomList);
                 responseModel.setResponseCode("00");
@@ -56,7 +57,6 @@ public class RoomController {
 //            responseModel.setResponseMessage("Failure fetching customers");
 //            logger.severe("Failure fetching customers");
 //        }
-
         return responseModel;
     }
 

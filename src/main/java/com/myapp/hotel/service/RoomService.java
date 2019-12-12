@@ -11,5 +11,5 @@ public interface RoomService {
     public RoomRequest convertToDto(Room room);
     public Optional<Room> findRoomById(Long id);
     List<Room> findAllRoom();
-    List<Room> findByNoOfOccupants(int value);
+    List<Room> findByNoOfOccupants(int value, int page, int size);
 }

@@ -32,7 +32,8 @@ public class CustomerController {
         try{
             customerService.addCustomer(customerRequest);
             isSaved=true;
-        }catch(Exception e){
+        }
+        catch(Exception e){
             e.printStackTrace();
             e.getMessage();
             logger.info("failed");

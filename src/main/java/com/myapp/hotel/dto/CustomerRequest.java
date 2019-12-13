@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class CustomerRequest extends BaseModel {
-//    public StandardLocation customer;
+
     private  Long id;
     @NotNull
     private  String name;

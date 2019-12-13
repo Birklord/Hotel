@@ -1,13 +1,15 @@
 package com.myapp.hotel.api;
 
 import com.myapp.hotel.dto.ReservationRequest;
+import com.myapp.hotel.dto.ResponseModel;
+import com.myapp.hotel.model.Customer;
 import com.myapp.hotel.model.Reservation;
+import com.myapp.hotel.repository.CustomerRepository;
+import com.myapp.hotel.repository.ReservationRepository;
 import com.myapp.hotel.service.ReservationService;
+import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,14 +19,46 @@ import java.util.Optional;
 public class ReservationController {
     @Autowired
     private final ReservationService reservationService;
+    @Autowired
+    private CustomerRepository customerRepository;
+
 
     public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
     }
     @PostMapping("/save")
-    public Boolean addReservation(ReservationRequest reservationRequest){
-        Boolean isSaved = reservationService.addReservation(reservationRequest);
-        return isSaved;
+    public ResponseModel addReservation(@RequestBody ReservationRequest reservationRequest){
+        ResponseModel responseModel = new ResponseModel();
+        Optional<Customer> customer =customerRepository.findById(reservationRequest.getCustomerId());
+        Boolean isSaved = false;
+        if (customer.isPresent()) {
+            try {
+                isSaved = reservationService.addReservation(reservationRequest);
+                isSaved = true;
+//            responseModel.setData(isSaved);
+                responseModel.setResponseCode("00");
+                responseModel.setValid(true);
+                responseModel.setResponseMessage("Successfully added");
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                e.getMessage();
+                responseModel.setData(null);
+                responseModel.setResponseCode("99");
+                responseModel.setValid(false);
+                responseModel.setResponseMessage("Failed to adding");
+            }
+        }
+            else{
+                responseModel.setData(null);
+                responseModel.setResponseCode("99");
+                responseModel.setValid(false);
+                responseModel.setResponseMessage("Failed to adding");
+            }
+
+
+
+        return responseModel;
     }
     @GetMapping("retrieveall")
     public List<Reservation> getAllReservation(){

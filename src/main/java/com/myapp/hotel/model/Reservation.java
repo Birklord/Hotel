@@ -16,7 +16,7 @@ public class Reservation {
     @OneToOne
     @JoinColumn
     private Customer customer;
-
+    @JoinColumn
     @OneToMany
     private Set<Room> room;
 

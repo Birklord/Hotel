@@ -68,36 +68,21 @@ public class RoomServiceImpl implements RoomService {
                 List<Room> roomReturns = new ArrayList<>();
                 int count = 0;
                 for(int i = 0; i< roomSuggest.size(); i++){
-                    do {
-                        if (roomReturns.get(i).getMaximum() >= value) {
-                            roomReturns.add(roomReturns.get(i));
-                            count += 7;
+
+                        if (roomSuggest.get(i).getMaximum() >= value) {
+                            roomReturns.add(roomSuggest.get(i));
+                            break;
+                        }else{
+                            roomReturns.add(roomSuggest.get(i));
+                            count += roomSuggest.get(i).getMaximum();
                         }
-                    }while (count <= value);
-                     break;
+                        if(count >= value){
+                           break;
+                        }
+
                     }
                 return roomReturns;
                 }
-
-//                List<Room> suggest = roomRepository.suggest(value, pageable);
-//                for(Room room : suggest){
-//                    if(room.getMaximum()>7){
-//                        list.add(room);
-//                    }
-//                }
-//                return suggest;
-//            }
-//        return roomRepository.findAll();
-//        int count = 0;
-//        for(int i = 1; i<= value;  i++){
-//            if(value == 2){
-//            roomRepository.occupantCheck(pageable);
-//            count  += 2;
-//            return roomRepository.occupantCheck(pageable);
-//        }
-//        else (value >= 5){
-//                int count = 0;
-//            for(int I = value); i<= count; i++){
 
             return roomRepository.occupantAnalyzer();
     }

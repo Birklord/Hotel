@@ -16,8 +16,11 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("select r from Room r where r.maximum in (2) order by r.roomTypeAmount")
     public List<Room> occupantCheck(Pageable pageable);
 
-    @Query("select r from Room r where r.maximum = 2 or (r.maximum <=:value) ")
-    public List<Room> occupantAnalyzer(int value, Pageable pageable);
+    @Query("select r.maximum from Room r order by r.maximum desc")
+    public List<Room> occupantAnalyzer();
+
+//    @Query("select r from Room r where r.status = 'A' and sum(r.maximum) =:value ")
+//    public List<Room> suggest(int value, Pageable pageable);
 
 }
 

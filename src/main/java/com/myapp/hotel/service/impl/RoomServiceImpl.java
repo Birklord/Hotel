@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -54,20 +55,51 @@ public class RoomServiceImpl implements RoomService {
     }
     @Override
     public List<Room> findByNoOfOccupants(int value, int page, int size){
-
+        Pageable pageable = (Pageable) PageRequest.of(page, size);
             if(value == 0)
                 return null;
             if((value == 1)||(value == 2)) {
                 value = 2;
-                Pageable pageable = (Pageable) PageRequest.of(page, size);
+//                Pageable pageable = (Pageable) PageRequest.of(page, size);
                 return roomRepository.occupantCheck(pageable);
             }
             else if(value>=2){
+             List<Room> roomSuggest = roomRepository.occupantAnalyzer();
+                List<Room> roomReturns = new ArrayList<>();
+                int count = 0;
+                for(int i = 0; i< roomSuggest.size(); i++){
+                    do {
+                        if (roomReturns.get(i).getMaximum() >= value) {
+                            roomReturns.add(roomReturns.get(i));
+                            count += 7;
+                        }
+                    }while (count <= value);
+                     break;
+                    }
+                return roomReturns;
+                }
 
-                Pageable pageable = (Pageable) PageRequest.of(page, size);
-                return roomRepository.occupantAnalyzer(value, pageable);
-            }
-        return roomRepository.findAll();
+//                List<Room> suggest = roomRepository.suggest(value, pageable);
+//                for(Room room : suggest){
+//                    if(room.getMaximum()>7){
+//                        list.add(room);
+//                    }
+//                }
+//                return suggest;
+//            }
+//        return roomRepository.findAll();
+//        int count = 0;
+//        for(int i = 1; i<= value;  i++){
+//            if(value == 2){
+//            roomRepository.occupantCheck(pageable);
+//            count  += 2;
+//            return roomRepository.occupantCheck(pageable);
+//        }
+//        else (value >= 5){
+//                int count = 0;
+//            for(int I = value); i<= count; i++){
+
+            return roomRepository.occupantAnalyzer();
     }
 
     @Override

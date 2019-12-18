@@ -40,23 +40,23 @@ public class RoomController {
     @GetMapping("/roomsearch/{value}")
     public ResponseModel determineRoomByNoOfOccupants(@PathVariable int value, @Param("page") int page, @Param("size") int size){
         ResponseModel responseModel = new ResponseModel();
-//        try {
+        try {
             List<Room> roomList = roomService.findByNoOfOccupants(value, page, size);
 
                 responseModel.setInfo(roomList);
                 responseModel.setResponseCode("00");
                 responseModel.setValid(true);
                 responseModel.setResponseMessage("Success fetching customers");
-//        }
-//        catch(Exception e) {
-//            e.printStackTrace();
-//            e.getMessage();
-//            responseModel.setData(null);
-//            responseModel.setResponseCode("99");
-//            responseModel.setValid(false);
-//            responseModel.setResponseMessage("Failure fetching customers");
-//            logger.severe("Failure fetching customers");
-//        }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            e.getMessage();
+            responseModel.setData(null);
+            responseModel.setResponseCode("99");
+            responseModel.setValid(false);
+            responseModel.setResponseMessage("Failure fetching customers");
+            logger.severe("Failure fetching customers");
+        }
         return responseModel;
     }
 

@@ -53,14 +53,14 @@ public class RoomServiceImpl implements RoomService {
         roomRequest.setRoomFloor(room.getRoomFloor());
         return roomRequest;
     }
+
     @Override
     public List<Room> findByNoOfOccupants(int value, int page, int size){
         Pageable pageable = (Pageable) PageRequest.of(page, size);
             if(value == 0)
                 return null;
-            if((value == 1)||(value == 2)) {
+            if((value == 1)||(value <= 4)) {
                 value = 2;
-//                Pageable pageable = (Pageable) PageRequest.of(page, size);
                 return roomRepository.occupantCheck(pageable);
             }
             else if(value>=2){
@@ -69,21 +69,20 @@ public class RoomServiceImpl implements RoomService {
                 int count = 0;
                 for(int i = 0; i< roomSuggest.size(); i++){
 
-                        if (roomSuggest.get(i).getMaximum() >= value) {
-                            roomReturns.add(roomSuggest.get(i));
-                            break;
-                        }else{
-                            roomReturns.add(roomSuggest.get(i));
-                            count += roomSuggest.get(i).getMaximum();
-                        }
-                        if(count >= value){
-                           break;
-                        }
-
+                    if (roomSuggest.get(i).getMaximum() >= value) {
+                        roomReturns.add(roomSuggest.get(i));
+                        break;
+                    }else{
+                        roomReturns.add(roomSuggest.get(i));
+                        count += roomSuggest.get(i).getMaximum();
                     }
+                    if(count >= value){
+                        break;
+                    }
+
+                }
                 return roomReturns;
                 }
-
             return roomRepository.occupantAnalyzer();
     }
 

@@ -35,9 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = mapper.map(customerRequest,Customer.class);
         Boolean saved=false;
         try {
-            customers = new Customers();
-            JSONObject jsonObject = customers.createCustomer(customerRequest.getEmail(), customerRequest.getFirstName(), customerRequest.getLastName(), customerRequest.getPhone(), null);
-            customerRequest.setCustomerCode(getJsonObject.customerCode);
+
 
             customerRepository.save(customer);
              saved=true;

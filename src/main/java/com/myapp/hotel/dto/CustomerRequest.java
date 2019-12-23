@@ -10,11 +10,14 @@ import javax.validation.constraints.NotNull;
 public class CustomerRequest extends BaseModel {
 
     private  Long id;
-    @NotNull
-    private  String name;
-    @NotNull
+//    @NotNull
+    private  String firstName;
+
+//    @NotNull
+    private  String lastName;
+//    @NotNull
     private String email;
-    @NotNull
-    private  String phoneNo;
+//    @NotNull
+    private  String phone;
     private  String address;
 }

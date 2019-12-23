@@ -1,11 +1,15 @@
 package com.myapp.hotel.api;
 
 
+import com.google.gson.Gson;
 import com.myapp.hotel.dto.BaseModel;
 import com.myapp.hotel.dto.CustomerRequest;
 import com.myapp.hotel.dto.ResponseModel;
 import com.myapp.hotel.exception.CustomerNotAddedException;
 import com.myapp.hotel.service.CustomerService;
+import me.iyanuadelekan.paystackjava.core.ApiConnection;
+import me.iyanuadelekan.paystackjava.core.Customers;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +24,8 @@ public class CustomerController {
 
     @Autowired
     private final CustomerService customerService;
+    private Customers customers;
+//    private ApiConnection apiConnection;
     static Logger logger = Logger.getLogger(String.valueOf(CustomerController.class));
 
     public CustomerController(CustomerService customerService) {
@@ -28,9 +34,15 @@ public class CustomerController {
 
     @PostMapping("/save")
     public Boolean addCustomer(@Valid @NonNull @RequestBody CustomerRequest customerRequest){
+        customers = new Customers();
+
+       JSONObject jsonObject = customers.createCustomer(customerRequest.getEmail(), customerRequest.getFirstName(), customerRequest.getPhone(), customerRequest.getLastName(),null);
+        Gson gson = new Gson();
+        String json = gson.toJson(customerRequest);
        Boolean isSaved= false;
         try{
             customerService.addCustomer(customerRequest);
+
             isSaved=true;
         }
         catch(Exception e){

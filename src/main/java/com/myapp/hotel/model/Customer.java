@@ -12,11 +12,13 @@ public class Customer{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private  Long id;
     @NotNull
-    private  String name;
+    private  String firstName;
+    @NotNull
+    private String LastName;
     @NotNull
     private  String email;
     @NotNull
-    private  String phoneNo;
+    private  String phone;
     private  String address;
 
 

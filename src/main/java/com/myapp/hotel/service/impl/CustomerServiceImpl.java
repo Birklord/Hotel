@@ -48,9 +48,10 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerRequest convertToDto(Customer customer){
         CustomerRequest customerRequest = new CustomerRequest();
         customerRequest.setId(customer.getId());
-        customerRequest.setName(customer.getName());
+        customerRequest.setFirstName(customer.getFirstName());
         customerRequest.setEmail(customer.getEmail());
-        customerRequest.setPhoneNo(customer.getPhoneNo());
+        customerRequest.setLastName(customer.getLastName());
+        customerRequest.setPhone(customer.getPhone());
         customerRequest.setAddress(customer.getAddress());
         return customerRequest;
     }

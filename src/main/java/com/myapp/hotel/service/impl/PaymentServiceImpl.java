@@ -54,7 +54,10 @@ public  class PaymentServiceImpl implements PaymentService {
         try{
             Optional<Payment> payment = paymentRepository.findById(id);
             if(payment.get()!= null){
-                return convertToDto(payment.get());
+                PaymentRequest paymentDetails = convertToDto(payment.get());
+
+                return paymentDetails;
+//                return convertToDto(payment.get());
             }
             logger.info("Success");
         }catch(Exception e){

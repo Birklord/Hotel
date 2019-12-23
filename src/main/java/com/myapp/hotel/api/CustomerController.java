@@ -24,8 +24,7 @@ public class CustomerController {
 
     @Autowired
     private final CustomerService customerService;
-    private Customers customers;
-//    private ApiConnection apiConnection;
+
     static Logger logger = Logger.getLogger(String.valueOf(CustomerController.class));
 
     public CustomerController(CustomerService customerService) {
@@ -34,11 +33,10 @@ public class CustomerController {
 
     @PostMapping("/save")
     public Boolean addCustomer(@Valid @NonNull @RequestBody CustomerRequest customerRequest){
-        customers = new Customers();
 
-       JSONObject jsonObject = customers.createCustomer(customerRequest.getEmail(), customerRequest.getFirstName(), customerRequest.getPhone(), customerRequest.getLastName(),null);
-        Gson gson = new Gson();
-        String json = gson.toJson(customerRequest);
+//        Gson gson = new Gson();
+//        String json = gson.toJson(customerRequest);
+
        Boolean isSaved= false;
         try{
             customerService.addCustomer(customerRequest);

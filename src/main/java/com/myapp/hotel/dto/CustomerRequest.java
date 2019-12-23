@@ -20,4 +20,5 @@ public class CustomerRequest extends BaseModel {
 //    @NotNull
     private  String phone;
     private  String address;
+    private String customerCode;
 }

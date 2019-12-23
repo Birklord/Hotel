@@ -20,6 +20,9 @@ public class Customer{
     @NotNull
     private  String phone;
     private  String address;
+    @NotNull
+    private String customerCode;
+
 
 
     public Customer() {

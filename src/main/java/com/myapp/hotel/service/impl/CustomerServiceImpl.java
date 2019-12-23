@@ -5,7 +5,9 @@ import com.myapp.hotel.dto.CustomerRequest;
 import com.myapp.hotel.model.Customer;
 import com.myapp.hotel.repository.CustomerRepository;
 import com.myapp.hotel.service.CustomerService;
+import me.iyanuadelekan.paystackjava.core.Customers;
 import org.dozer.Mapper;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ import java.util.logging.Logger;
 public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private  CustomerRepository customerRepository;
+    private Customers customers;
 
     private final Mapper mapper;
     static Logger logger = Logger.getLogger(String.valueOf(CustomerServiceImpl.class));
@@ -32,6 +35,10 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = mapper.map(customerRequest,Customer.class);
         Boolean saved=false;
         try {
+            customers = new Customers();
+            JSONObject jsonObject = customers.createCustomer(customerRequest.getEmail(), customerRequest.getFirstName(), customerRequest.getLastName(), customerRequest.getPhone(), null);
+            customerRequest.setCustomerCode(getJsonObject.customerCode);
+
             customerRepository.save(customer);
              saved=true;
             logger.info("This save");

@@ -22,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private  CustomerRepository customerRepository;
     private Customers customers;
-
+    private Customer customer;
     private final Mapper mapper;
     static Logger logger = Logger.getLogger(String.valueOf(CustomerServiceImpl.class));
 
@@ -33,10 +33,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Boolean addCustomer(CustomerRequest customerRequest) {
         Customer customer = mapper.map(customerRequest,Customer.class);
+        customers = new Customers();
+        JSONObject jsonObject = customers.createCustomer(customerRequest.getEmail(), customerRequest.getFirstName(), customerRequest.getLastName(), customerRequest.getPhone(), null);
+        String customerCode = (String) ((JSONObject)jsonObject.get("data")).get("customer_code");
+
         Boolean saved=false;
         try {
-
-
+            customer.setCustomerCode(customerCode);
             customerRepository.save(customer);
              saved=true;
             logger.info("This save");

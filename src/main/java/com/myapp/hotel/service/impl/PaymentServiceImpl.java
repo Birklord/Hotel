@@ -1,10 +1,13 @@
 package com.myapp.hotel.service.impl;
 
 import com.myapp.hotel.dto.BaseModel;
+import com.myapp.hotel.dto.CustomerRequest;
 import com.myapp.hotel.dto.PaymentRequest;
+import com.myapp.hotel.model.Customer;
 import com.myapp.hotel.model.Payment;
 import com.myapp.hotel.repository.PaymentRepository;
 import com.myapp.hotel.service.PaymentService;
+import me.iyanuadelekan.paystackjava.core.Transactions;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,10 @@ import java.util.logging.Logger;
 public  class PaymentServiceImpl implements PaymentService {
     @Autowired
     private final PaymentRepository paymentRepository;
+    private Transactions transactions;
+
+    @Autowired
+    private CustomerServiceImpl customerServiceImpl;
     private final Mapper mapper;
     static Logger logger = Logger.getLogger(String.valueOf(RoomServiceImpl.class));
 
@@ -27,8 +34,12 @@ public  class PaymentServiceImpl implements PaymentService {
     @Override
     public Boolean addPayment(PaymentRequest paymentRequest) {
         Payment payment = mapper.map(paymentRequest, Payment.class);
+        Customer customer = customerServiceImpl.findCustomer(payment.getCustomerId());
+        transactions = new Transactions();
+        transactions.initializeTransaction(customer.getCustomerCode(), payment.getTransactionAmount(), customer.getEmail(), null, null);
         Boolean saved=false;
         try{
+
            paymentRepository.save(payment);
             saved = true;
             logger.info("success");

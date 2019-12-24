@@ -17,12 +17,8 @@ import java.util.logging.Logger;
 @RestController
 public class PaymentController {
     @Autowired
-    private final PaymentService paymentService;
+    private  PaymentService paymentService;
     static Logger logger = Logger.getLogger(String.valueOf(PaymentController.class));
-
-    public PaymentController(PaymentService paymentService) {
-        this.paymentService = paymentService;
-    }
 
     @PostMapping("/save")
     public Boolean addCustomer(@Valid @NonNull @RequestBody PaymentRequest paymentRequest) {

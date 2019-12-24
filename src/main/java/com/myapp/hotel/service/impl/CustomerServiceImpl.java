@@ -42,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
             customer.setCustomerCode(customerCode);
             customerRepository.save(customer);
              saved=true;
-            logger.info("This save");
+            logger.info("saved");
         }
         catch (Exception ex){
             saved=false;
@@ -77,6 +77,23 @@ public class CustomerServiceImpl implements CustomerService {
             logger.severe("Not found");
         }
      return responseData;
+    }
+
+    @Override
+    public Customer findCustomer(Long id) {
+        try{
+            Optional<Customer> customer = customerRepository.findById(id);
+            if(customer.get()!= null){
+                return customer.get();
+            }
+            logger.info("found");
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            e.getMessage();
+            logger.severe("Not found");
+        }
+        return null;
     }
 
     @Override

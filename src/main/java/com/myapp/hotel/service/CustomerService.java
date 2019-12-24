@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface CustomerService {
 
 
+     Customer findCustomer(Long id);
      public Boolean addCustomer(CustomerRequest customerRequest);
 
      public BaseModel findCustomerById(Long id);

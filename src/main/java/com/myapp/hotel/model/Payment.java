@@ -18,10 +18,10 @@ import java.util.Date;
 @ToString
 @Component
 @ConfigurationProperties("paytm.payment.sandbox")
-
+@Entity
 public class Payment {
 
-    @OneToOne(mappedBy = "payment", cascade = CascadeType.ALL)
+   @OneToOne
     private Reservation reservations;
 
     @Id
@@ -38,6 +38,7 @@ public class Payment {
     private String website;
     private String industryTypeId;
     private String paytmUrl;
+    @Transient
     private Map<String, String> details;
 
 

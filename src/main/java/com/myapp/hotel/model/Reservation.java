@@ -21,7 +21,6 @@ public class Reservation {
     private Set<Room> room;
 
     @OneToOne
-    @JoinColumn
     private Payment payment;
 
     @Id

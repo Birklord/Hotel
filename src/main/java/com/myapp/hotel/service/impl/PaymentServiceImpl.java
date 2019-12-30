@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 public  class PaymentServiceImpl implements PaymentService {
     @Autowired
     private final PaymentRepository paymentRepository;
-    private Transactions transactions;
-
     @Autowired
     private CustomerServiceImpl customerServiceImpl;
     private final Mapper mapper;
@@ -35,11 +33,10 @@ public  class PaymentServiceImpl implements PaymentService {
     public Boolean addPayment(PaymentRequest paymentRequest) {
         Payment payment = mapper.map(paymentRequest, Payment.class);
         Customer customer = customerServiceImpl.findCustomer(payment.getCustomerId());
-        transactions = new Transactions();
+        Transactions transactions = new Transactions();
         transactions.initializeTransaction(customer.getCustomerCode(), payment.getTransactionAmount(), customer.getEmail(), null, null);
         Boolean saved=false;
         try{
-
            paymentRepository.save(payment);
             saved = true;
             logger.info("success");

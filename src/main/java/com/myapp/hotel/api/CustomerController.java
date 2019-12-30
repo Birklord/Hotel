@@ -1,17 +1,11 @@
 package com.myapp.hotel.api;
 
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.myapp.hotel.dto.BaseModel;
 import com.myapp.hotel.dto.CustomerRequest;
 import com.myapp.hotel.dto.ResponseModel;
 import com.myapp.hotel.exception.CustomerNotAddedException;
-import com.myapp.hotel.model.Customer;
 import com.myapp.hotel.service.CustomerService;
-import me.iyanuadelekan.paystackjava.core.ApiConnection;
-import me.iyanuadelekan.paystackjava.core.Customers;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;

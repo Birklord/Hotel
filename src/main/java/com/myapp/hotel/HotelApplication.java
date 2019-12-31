@@ -14,6 +14,7 @@ public class HotelApplication {
 	public Mapper mapper() {
 		return new DozerBeanMapper();
 	}
+
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(HotelApplication.class, args);
 	}

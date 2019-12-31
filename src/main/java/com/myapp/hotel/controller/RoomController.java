@@ -1,4 +1,4 @@
-package com.myapp.hotel.api;
+package com.myapp.hotel.controller;
 
 
 import com.myapp.hotel.dto.ResponseModel;

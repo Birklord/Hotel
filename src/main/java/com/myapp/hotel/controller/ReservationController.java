@@ -1,13 +1,11 @@
-package com.myapp.hotel.api;
+package com.myapp.hotel.controller;
 
 import com.myapp.hotel.dto.ReservationRequest;
 import com.myapp.hotel.dto.ResponseModel;
 import com.myapp.hotel.model.Customer;
 import com.myapp.hotel.model.Reservation;
 import com.myapp.hotel.repository.CustomerRepository;
-import com.myapp.hotel.repository.ReservationRepository;
 import com.myapp.hotel.service.ReservationService;
-import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

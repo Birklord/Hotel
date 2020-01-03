@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
-public class ReservationRequest {
+public class ReservationRequest extends BaseModel {
     private  Long id;
     @NotNull
     private Date checkIn;

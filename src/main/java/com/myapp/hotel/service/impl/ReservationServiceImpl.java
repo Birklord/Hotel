@@ -7,11 +7,9 @@ import com.myapp.hotel.repository.CustomerRepository;
 import com.myapp.hotel.repository.ReservationRepository;
 import com.myapp.hotel.service.ReservationService;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -24,7 +22,6 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     @Autowired
     private CustomerRepository customerRepository;
-    private Reservation reservation;
     private final Mapper mapper;
     static Logger logger = Logger.getLogger(String.valueOf(ReservationServiceImpl.class));
 
@@ -72,6 +69,7 @@ public class ReservationServiceImpl implements ReservationService {
         Optional<Customer> customer =customerRepository.findById(reservationRequest.getCustomerId());
         Boolean saved = false;
 
+        Reservation reservation = new Reservation();
         try {
             reservation.setReferenceNo(referenceNo());
             reservation.setCustomer(customer.get());

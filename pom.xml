@@ -14,10 +14,12 @@
 	<name>hotel</name>
 	<description>Project to Build Hotel Reservation System</description>
 
+
+	<url>http://maven.apache.org</url>
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>me.iyanuadelekan</groupId>

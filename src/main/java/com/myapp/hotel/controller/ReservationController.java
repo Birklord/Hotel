@@ -64,8 +64,8 @@ public class ReservationController {
         return isFound;
     }
 
-    @GetMapping(path = "{id}")
-    public Optional<Reservation> getReservationById(Long id){
+    @GetMapping("retrievebyid/{id}")
+    public Optional<Reservation> getReservationById(@PathVariable Long id){
         return reservationService.findReservationById(id);
     }
 }

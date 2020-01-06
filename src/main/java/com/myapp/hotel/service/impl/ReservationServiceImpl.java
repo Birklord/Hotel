@@ -66,10 +66,10 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Boolean addReservation(ReservationRequest reservationRequest) {
+        Reservation reservation = mapper.map(reservationRequest,Reservation.class);
         Optional<Customer> customer =customerRepository.findById(reservationRequest.getCustomerId());
         Boolean saved = false;
 
-        Reservation reservation = new Reservation();
         try {
             reservation.setReferenceNo(referenceNo());
             reservation.setCustomer(customer.get());

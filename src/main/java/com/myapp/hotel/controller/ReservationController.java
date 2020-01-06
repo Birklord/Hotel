@@ -33,7 +33,7 @@ public class ReservationController {
             try {
                 isSaved = reservationService.addReservation(reservationRequest);
                 isSaved = true;
-//            responseModel.setData(isSaved);
+//                responseModel.setData();
                 responseModel.setResponseCode("00");
                 responseModel.setValid(true);
                 responseModel.setResponseMessage("Successfully added");
@@ -41,17 +41,18 @@ public class ReservationController {
             catch(Exception e){
                 e.printStackTrace();
                 e.getMessage();
-                responseModel.setData(null);
+//                responseModel.setData(null);
                 responseModel.setResponseCode("99");
                 responseModel.setValid(false);
                 responseModel.setResponseMessage("Failed to adding");
             }
         }
             else{
-                responseModel.setData(null);
-                responseModel.setResponseCode("99");
-                responseModel.setValid(false);
-                responseModel.setResponseMessage("Failed to adding");
+                System.out.println("invalid customer");
+//                responseModel.setData(null);
+//                responseModel.setResponseCode("99");
+//                responseModel.setValid(false);
+//                responseModel.setResponseMessage("Failed to adding");
             }
 
 

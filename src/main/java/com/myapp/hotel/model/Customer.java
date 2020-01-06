@@ -14,7 +14,7 @@ public class Customer{
     @NotNull
     private  String firstName;
     @NotNull
-    private String LastName;
+    private String lastName;
     @NotNull
     private  String email;
     @NotNull

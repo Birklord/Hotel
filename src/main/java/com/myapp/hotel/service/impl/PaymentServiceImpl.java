@@ -1,7 +1,6 @@
 package com.myapp.hotel.service.impl;
 
 import com.myapp.hotel.dto.BaseModel;
-import com.myapp.hotel.dto.CustomerRequest;
 import com.myapp.hotel.dto.PaymentRequest;
 import com.myapp.hotel.model.Customer;
 import com.myapp.hotel.model.Payment;
@@ -9,6 +8,7 @@ import com.myapp.hotel.repository.PaymentRepository;
 import com.myapp.hotel.service.PaymentService;
 import me.iyanuadelekan.paystackjava.core.Transactions;
 import org.dozer.Mapper;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,18 +33,29 @@ public  class PaymentServiceImpl implements PaymentService {
     public Boolean addPayment(PaymentRequest paymentRequest) {
         Payment payment = mapper.map(paymentRequest, Payment.class);
         Customer customer = customerServiceImpl.findCustomer(payment.getCustomerId());
-        Transactions transactions = new Transactions();
-        transactions.initializeTransaction(customer.getCustomerCode(), payment.getTransactionAmount(), customer.getEmail(), null, null);
-        Boolean saved=false;
-        try{
-           paymentRepository.save(payment);
-            saved = true;
-            logger.info("success");
+        if(customer != null) {
+            Transactions transactions = new Transactions();
+            JSONObject jsonObject = transactions.initializeTransaction(customer.getCustomerCode(), payment.getTransactionAmount(), customer.getEmail(), null, null);
+            String paystackReference = (String) ((JSONObject) jsonObject.get("data")).get("reference");
+            String paystackAccessCode = (String) ((JSONObject) jsonObject.get("data")).get("access_code");
+            String paystackAuthorizationUrl = (String) ((JSONObject) jsonObject.get("data")).get("authorization_url");
+            Boolean saved = false;
+            try {
+                payment.setPaystackAuthorizationUrl(paystackAuthorizationUrl);
+                payment.setPaystackAccessCode(paystackAccessCode);
+                payment.setPaystackReference(paystackReference);
+                paymentRepository.save(payment);
+                saved = true;
+                logger.info("success");
+            } catch (Exception e) {
+                saved = false;
+                e.printStackTrace();
+                e.getMessage();
+                logger.severe("failed");
+            }
+            return saved;
         }
-        catch(Exception e){
-            saved=false; e.printStackTrace(); e.getMessage(); logger.severe("failed");
-        }
-        return saved;
+        else return false;
     }
 
     @Override

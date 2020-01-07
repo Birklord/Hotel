@@ -57,33 +57,33 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<Room> findByNoOfOccupants(int value, int page, int size){
         Pageable pageable = (Pageable) PageRequest.of(page, size);
-            if(value == 0)
-                return null;
-            if((value == 1)||(value <= 4)) {
-                value = 2;
-                return roomRepository.occupantCheck(pageable);
-            }
-            else if(value>=2){
-             List<Room> roomSuggest = roomRepository.occupantAnalyzer();
-                List<Room> roomReturns = new ArrayList<>();
-                int count = 0;
-                for(int i = 0; i< roomSuggest.size(); i++){
-
-                    if (roomSuggest.get(i).getMaximum() >= value) {
-                        roomReturns.add(roomSuggest.get(i));
-                        break;
-                    }else{
-                        roomReturns.add(roomSuggest.get(i));
-                        count += roomSuggest.get(i).getMaximum();
+        int maxRoom=2;
+                    if(value <= 2) {
+                        return roomRepository.occupantCheck(pageable, maxRoom);
                     }
-                    if(count >= value){
-                        break;
+                    else {
+                             List<Room> allAvailableRooms = roomRepository.findAllAvailableRooms();
+                                List<Room> roomReturns = new ArrayList<>();
+                                int count = 0;
+                                for(int i = 0; i< allAvailableRooms.size(); i++){
+
+                                    if (allAvailableRooms.get(i).getMaximum() >= value) {
+                                        roomReturns.add(allAvailableRooms.get(i));
+                                        count += allAvailableRooms.get(i).getMaximum();
+                                    }
+                                    if((value-count)<3) {
+                                        List<Room> room = roomRepository.occupantCheck(pageable, maxRoom);
+                                        roomReturns.add(room.get(i));
+                                        count += room.get(i).getMaximum();
+                                        break;
+                                    }
+                                    else if(count >= value){
+                                        break;
+                                    }
+                                }
+                                return roomReturns;
                     }
 
-                }
-                return roomReturns;
-                }
-            return roomRepository.occupantAnalyzer();
     }
 
     @Override

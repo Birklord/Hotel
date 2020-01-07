@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/CustomerCodeAndPaymentReservation")
+@RequestMapping("api/v1/customercodeandpaymentreservation")
 public class CustomerCodeAndPaymentReferenceController {
     @Autowired
     private CustomerCodeAndPaymentReferenceService customerCodeAndPaymentReservationService;

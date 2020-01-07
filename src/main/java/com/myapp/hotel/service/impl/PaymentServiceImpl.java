@@ -40,18 +40,34 @@ public  class PaymentServiceImpl implements PaymentService {
         CustomerCodeAndPaymentReference customerCodeAndPaymentReference = new CustomerCodeAndPaymentReference();
         if(customer != null) {
             Transactions transactions = new Transactions();
-            JSONObject jsonObject = transactions.initializeTransaction(customer.getCustomerCode(), payment.getTransactionAmount(), customer.getEmail(), null, null);
-            String paystackReference = (String) ((JSONObject) jsonObject.get("data")).get("reference");
-            String paystackAccessCode = (String) ((JSONObject) jsonObject.get("data")).get("access_code");
-            String paystackAuthorizationUrl = (String) ((JSONObject) jsonObject.get("data")).get("authorization_url");
+            JSONObject jsonObject = new JSONObject();
+
+                jsonObject = transactions.initializeTransaction(customer.getCustomerCode(), payment.getTransactionAmount(), customer.getEmail(), null, null);
+                String paystackReference = (String) ((JSONObject) jsonObject.get("data")).get("reference");
+                String paystackAccessCode = (String) ((JSONObject) jsonObject.get("data")).get("access_code");
+                String paystackAuthorizationUrl = (String) ((JSONObject) jsonObject.get("data")).get("authorization_url");
+            try {
+                customerCodeAndPaymentReference.setCustomerCode(customer.getCustomerCode());
+                customerCodeAndPaymentReference.setPaymentReference(paystackReference);
+                custAndPayRefPersist();
+                logger.info("Gotten expected values");
+            }
+            catch(Exception e){
+                        e.getMessage();
+                        e.printStackTrace();
+                        logger.severe("Duplicate transaction");
+            }
+
             Boolean saved = false;
             try {
                 customerCodeAndPaymentReference.setCustomerCode(customer.getCustomerCode());
                 customerCodeAndPaymentReference.setPaymentReference(paystackReference);
+                custAndPayRefPersist();
                 payment.setPaystackAuthorizationUrl(paystackAuthorizationUrl);
                 payment.setPaystackAccessCode(paystackAccessCode);
                 payment.setPaystackReference(paystackReference);
                 paymentRepository.save(payment);
+
                 saved = true;
                 logger.info("success");
             } catch (Exception e) {
@@ -104,6 +120,20 @@ public  class PaymentServiceImpl implements PaymentService {
         }
         return paymentRepository.findAll();
     }
+
+    void custAndPayRefPersist(){
+        CustomerCodeAndPaymentReference customerCodeAndPaymentReference = new CustomerCodeAndPaymentReference();
+        try{
+        customerCodeAndPaymentReservationRepository.save(customerCodeAndPaymentReference);
+            logger.info("Successfully persisted");
+    }catch(Exception e){
+            e.printStackTrace();
+            e.getMessage();
+            logger.severe("Ko ti Shele");
+        }
+    }
+
+
 }
 
 

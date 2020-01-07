@@ -3,7 +3,9 @@ package com.myapp.hotel.service.impl;
 import com.myapp.hotel.dto.BaseModel;
 import com.myapp.hotel.dto.PaymentRequest;
 import com.myapp.hotel.model.Customer;
+import com.myapp.hotel.model.CustomerCodeAndPaymentReference;
 import com.myapp.hotel.model.Payment;
+import com.myapp.hotel.repository.CustomerCodeAndPaymentReferenceRepository;
 import com.myapp.hotel.repository.PaymentRepository;
 import com.myapp.hotel.service.PaymentService;
 import me.iyanuadelekan.paystackjava.core.Transactions;
@@ -20,8 +22,10 @@ import java.util.logging.Logger;
 public  class PaymentServiceImpl implements PaymentService {
     @Autowired
     private final PaymentRepository paymentRepository;
+    private CustomerCodeAndPaymentReferenceRepository customerCodeAndPaymentReservationRepository;
     @Autowired
     private CustomerServiceImpl customerServiceImpl;
+
     private final Mapper mapper;
     static Logger logger = Logger.getLogger(String.valueOf(RoomServiceImpl.class));
 
@@ -33,6 +37,7 @@ public  class PaymentServiceImpl implements PaymentService {
     public Boolean addPayment(PaymentRequest paymentRequest) {
         Payment payment = mapper.map(paymentRequest, Payment.class);
         Customer customer = customerServiceImpl.findCustomer(payment.getCustomerId());
+        CustomerCodeAndPaymentReference customerCodeAndPaymentReference = new CustomerCodeAndPaymentReference();
         if(customer != null) {
             Transactions transactions = new Transactions();
             JSONObject jsonObject = transactions.initializeTransaction(customer.getCustomerCode(), payment.getTransactionAmount(), customer.getEmail(), null, null);
@@ -41,6 +46,8 @@ public  class PaymentServiceImpl implements PaymentService {
             String paystackAuthorizationUrl = (String) ((JSONObject) jsonObject.get("data")).get("authorization_url");
             Boolean saved = false;
             try {
+                customerCodeAndPaymentReference.setCustomerCode(customer.getCustomerCode());
+                customerCodeAndPaymentReference.setPaymentReference(paystackReference);
                 payment.setPaystackAuthorizationUrl(paystackAuthorizationUrl);
                 payment.setPaystackAccessCode(paystackAccessCode);
                 payment.setPaystackReference(paystackReference);

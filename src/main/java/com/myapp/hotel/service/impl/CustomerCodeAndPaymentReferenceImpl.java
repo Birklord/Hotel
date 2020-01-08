@@ -8,13 +8,31 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class CustomerCodeAndPaymentReferenceImpl implements CustomerCodeAndPaymentReferenceService {
     @Autowired
     private CustomerCodeAndPaymentReferenceRepository customerCodeAndPaymentReferenceRepository;
+    private CustomerCodeAndPaymentReference customerCodeAndPaymentReference;
+    static Logger logger = Logger.getLogger(String.valueOf(CustomerCodeAndPaymentReference.class));
 
-    @Autowired
+    @Override
+    public Boolean addCustCodeAndPayRef(CustomerCodeAndPaymentReference customerCodeAndPaymentReference){
+        Boolean isSaved = false;
+        try{
+            customerCodeAndPaymentReferenceRepository.save(customerCodeAndPaymentReference);
+            isSaved = true;
+            logger.info("Saved");
+        }catch(Exception e){
+            e.printStackTrace();
+            logger.severe("Failed");
+            isSaved = false;
+        }
+        return isSaved;
+    }
+
+    @Override
     public List<CustomerCodeAndPaymentReference> findAll(){
         return customerCodeAndPaymentReferenceRepository.findAll();
     }

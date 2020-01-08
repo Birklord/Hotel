@@ -39,6 +39,12 @@ public class ReservationServiceImpl implements ReservationService {
         String monthValue= month[gregorianCalendar.get(Calendar.MONTH)];
         return monthValue;
     }
+
+    public String day(){
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        String dayValue = String.valueOf(gregorianCalendar.get(Calendar.DAY_OF_MONTH));
+        return dayValue;
+    }
     public String year(){
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
         String year = String.valueOf(gregorianCalendar.get(Calendar.YEAR));
@@ -49,6 +55,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     public String referenceNo(){
         String referenceNo = String.valueOf(generator() + month() + generator()+ year()).toUpperCase();
+        return referenceNo;
+    }
+
+    public String PayStackRefNoGenerator(){
+        String referenceNo = String.valueOf(day() + month() + generator() + generator()+ year());
         return referenceNo;
     }
 

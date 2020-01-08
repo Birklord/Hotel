@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerCodeAndPaymentReferenceService {
-
+    public Boolean addCustCodeAndPayRef(CustomerCodeAndPaymentReference customerCodeAndPaymentReference);
     public List<CustomerCodeAndPaymentReference> findAll();
     public Optional<CustomerCodeAndPaymentReference> findById(Long Id);
 }

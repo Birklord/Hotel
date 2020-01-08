@@ -25,7 +25,7 @@ public  class PaymentServiceImpl implements PaymentService {
     private CustomerCodeAndPaymentReferenceRepository customerCodeAndPaymentReservationRepository;
     @Autowired
     private CustomerServiceImpl customerServiceImpl;
-
+    private ReservationServiceImpl reservationServiceImpl;
     private final Mapper mapper;
     static Logger logger = Logger.getLogger(String.valueOf(RoomServiceImpl.class));
 
@@ -38,17 +38,21 @@ public  class PaymentServiceImpl implements PaymentService {
         Payment payment = mapper.map(paymentRequest, Payment.class);
         Customer customer = customerServiceImpl.findCustomer(payment.getCustomerId());
         CustomerCodeAndPaymentReference customerCodeAndPaymentReference = new CustomerCodeAndPaymentReference();
+
+        String payStackCode = String.valueOf(reservationServiceImpl.PayStackRefNoGenerator());
+//        if(payStackCode != null)
         if(customer != null) {
             Transactions transactions = new Transactions();
             JSONObject jsonObject = new JSONObject();
 
-                jsonObject = transactions.initializeTransaction(customer.getCustomerCode(), payment.getTransactionAmount(), customer.getEmail(), null, null);
+                jsonObject = transactions.initializeTransaction(payStackCode, payment.getTransactionAmount(), customer.getEmail(), null, null);
                 String paystackReference = (String) ((JSONObject) jsonObject.get("data")).get("reference");
                 String paystackAccessCode = (String) ((JSONObject) jsonObject.get("data")).get("access_code");
                 String paystackAuthorizationUrl = (String) ((JSONObject) jsonObject.get("data")).get("authorization_url");
             try {
                 customerCodeAndPaymentReference.setCustomerCode(customer.getCustomerCode());
                 customerCodeAndPaymentReference.setPaymentReference(paystackReference);
+                customerCodeAndPaymentReference.setPayStackCode(payStackCode);
                 custAndPayRefPersist();
                 logger.info("Gotten expected values");
             }
@@ -132,6 +136,8 @@ public  class PaymentServiceImpl implements PaymentService {
             logger.severe("Ko ti Shele");
         }
     }
+
+
 
 
 }

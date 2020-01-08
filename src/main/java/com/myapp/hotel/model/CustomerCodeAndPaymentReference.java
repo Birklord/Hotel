@@ -17,5 +17,6 @@ public class CustomerCodeAndPaymentReference {
 
     private String customerCode;
     private String paymentReference;
+    private String payStackCode;
 
 }

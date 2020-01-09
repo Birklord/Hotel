@@ -16,7 +16,7 @@ public class CustomerCodeAndPaymentReference {
     private Long Id;
 
     private String customerCode;
-    private String paymentReference;
-    private String payStackCode;
+    private String payStackUniqueReference;
+    private String status;
 
 }

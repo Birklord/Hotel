@@ -5,7 +5,6 @@ import com.myapp.hotel.dto.PaymentRequest;
 import com.myapp.hotel.model.Payment;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PaymentService {
     public Boolean addPayment(PaymentRequest paymentRequest);

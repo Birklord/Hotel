@@ -16,8 +16,8 @@ public class Reservation {
      private Customer customer;
     @OneToMany
     private List<Room> room;
-    @OneToOne
-    private Payment payment;
+//    @OneToOne
+//    private Payment payment;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;

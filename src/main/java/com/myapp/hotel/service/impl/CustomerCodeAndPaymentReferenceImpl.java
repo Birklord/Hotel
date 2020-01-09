@@ -42,4 +42,10 @@ public class CustomerCodeAndPaymentReferenceImpl implements CustomerCodeAndPayme
         return customerCodeAndPaymentReferenceRepository.findById(Id);
     }
 
+    public void saveFromPayment(String customerCode, String payStackUniqueReference, String status) {
+        customerCodeAndPaymentReference.setCustomerCode(customerCode);
+        customerCodeAndPaymentReference.setPayStackUniqueReference(payStackUniqueReference);
+        customerCodeAndPaymentReference.setStatus(status);
+        customerCodeAndPaymentReferenceRepository.save(customerCodeAndPaymentReference);
+    }
 }

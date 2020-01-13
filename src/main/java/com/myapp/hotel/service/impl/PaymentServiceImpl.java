@@ -5,6 +5,7 @@ import com.myapp.hotel.dto.PaymentRequest;
 import com.myapp.hotel.model.Customer;
 import com.myapp.hotel.model.Payment;
 import com.myapp.hotel.model.Reservation;
+import com.myapp.hotel.repository.CustomerCodeAndPaymentReferenceRepository;
 import com.myapp.hotel.repository.PaymentRepository;
 import com.myapp.hotel.service.PaymentService;
 import me.iyanuadelekan.paystackjava.core.Transactions;
@@ -19,9 +20,15 @@ import java.util.logging.Logger;
 @Service
 public  class PaymentServiceImpl implements PaymentService {
     @Autowired
+    private CustomerCodeAndPaymentReferenceImpl customerCodeAndPaymentReferenceImpl;
+    @Autowired
     private final PaymentRepository paymentRepository;
     @Autowired
+    private ReservationServiceImpl reservationServiceImpl;
+    @Autowired
     private CustomerServiceImpl customerServiceImpl;
+    @Autowired
+    private CustomerCodeAndPaymentReferenceRepository customerCodeAndPaymentReferenceRepository;
     private final Mapper mapper;
     static Logger logger = Logger.getLogger(String.valueOf(RoomServiceImpl.class));
 
@@ -31,39 +38,39 @@ public  class PaymentServiceImpl implements PaymentService {
     }
     @Override
     public Boolean addPayment(PaymentRequest paymentRequest) {
-        Reservation reservation = new Reservation();
         Payment payment = mapper.map(paymentRequest, Payment.class);
-        Customer customer = customerServiceImpl.findCustomer(payment.getCustomerId());
+        Optional<Reservation> reservation = reservationServiceImpl.findReservationById(paymentRequest.getReservationId());
+        Customer customer = customerServiceImpl.findCustomer(reservation.get().getCustomer().getId());
+        payment.setCustomerId(customer.getId());
+        payment.setReservation(reservation.get());
+        String payStackUniqueReference = paymentRequest.getReservationId() + PayStackRefNoGenerator();
         Boolean saved = false;
         String status = "s";
         if(customer != null) {
-            String payStackUniqueReference = reservation.getId() + PayStackRefNoGenerator();
-            CustomerCodeAndPaymentReferenceImpl customerCodeAndPaymentReferenceImpl = new CustomerCodeAndPaymentReferenceImpl();
             Transactions transactions = new Transactions();
             JSONObject jsonObject = transactions.initializeTransaction(payStackUniqueReference, payment.getTransactionAmount(), customer.getEmail(), null, null);
                 String paystackReference = (String) ((JSONObject) jsonObject.get("data")).get("reference");
                 String paystackAccessCode = (String) ((JSONObject) jsonObject.get("data")).get("access_code");
                 String paystackAuthorizationUrl = (String) ((JSONObject) jsonObject.get("data")).get("authorization_url");
                 String customerCode = String.valueOf(customer.getCustomerCode());
-                String PaymentReference = String.valueOf(paystackReference);
             try {
-
                 payment.setPaystackAuthorizationUrl(paystackAuthorizationUrl);
                 payment.setPaystackAccessCode(paystackAccessCode);
                 payment.setPaystackReference(paystackReference);
                 paymentRepository.save(payment);
-                customerCodeAndPaymentReferenceImpl.saveFromPayment(customerCode, payStackUniqueReference, status);
                 logger.info("success");
                 status = "s";
 
+                customerCodeAndPaymentReferenceImpl.saveFromPayment(customerCode, payStackUniqueReference, status);
+                saved= true;
             } catch (Exception e) {
                 saved = false;
                 e.printStackTrace();
                 e.getMessage();
                 logger.severe("failed");
                 status= "f";
+                customerCodeAndPaymentReferenceImpl.saveFromPayment(customerCode, payStackUniqueReference, status);
             }
-//            customerCodeAndPaymentReferenceImpl.saveFromPayment(customerCode, payStackUniqueReference, status);
             return saved;
         }
         return saved;
@@ -101,14 +108,16 @@ public  class PaymentServiceImpl implements PaymentService {
 
         List<BaseModel> responseData = new ArrayList<>();
         try{
-            paymentRepository.findAll().stream().forEach(payment-> responseData.add(convertToDto((Payment) payment)));
+            //paymentRepository.findAll().stream().forEach(payment-> responseData.add(convertToDto((Payment) payment)));
             logger.info("Success");
+            return paymentRepository.findAll();
+
         }catch(Exception e){
             e.printStackTrace();
             e.getMessage();
             logger.severe("failed");
         }
-        return paymentRepository.findAll();
+        return null;
     }
     public String generator(){
         String gen = RandomStringUtils.randomAlphanumeric(3);
@@ -135,7 +144,7 @@ public  class PaymentServiceImpl implements PaymentService {
     }
 
     public String PayStackRefNoGenerator(){
-        String referenceNo = String.valueOf(day() + month() + generator() + generator()+ year());
+        String referenceNo = String.valueOf(  generator()+ day() + month()+ year() +generator() );
         return referenceNo;
     }
 

@@ -13,9 +13,6 @@ public class PaymentRequest extends BaseModel{
     private Date transactionDate;
     @NotNull
     private String transactionAmount;
-    @NotNull
-    private Long customerId;
-    @NotNull
     private Long reservationId;
     private String paystackAuthorizationUrl;
     private String paystackAccessCode;

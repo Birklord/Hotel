@@ -1,3 +1,4 @@
+
 package com.myapp.hotel;
 
 import org.dozer.DozerBeanMapper;

@@ -26,17 +26,21 @@ public class PaymentController {
     @PostMapping("/save")
     public ResponseModel addCustomer(@Valid @NonNull @RequestBody PaymentRequest paymentRequest) {
         ResponseModel responseModel = new ResponseModel();
+        Boolean action = false;
         try {
             paymentService.addPayment(paymentRequest);
+            action = true;
             responseModel.setValid(true);
             responseModel.setResponseMessage("Successfully made payment");
-            responseModel.setResponseCode("00");
-        }catch (Exception e){
+            logger.info("Success");
+        }
+        catch (Exception e){
             e.printStackTrace();
-            logger.severe("failed to complete payment");
+            action = false;
             responseModel.setResponseMessage("failed to complete payment");
             responseModel.setValid(false);
             responseModel.setResponseCode("99");
+            logger.severe("failed to complete payment");
         }
         return responseModel;
     }
@@ -60,7 +64,6 @@ public class PaymentController {
             responseModel.setResponseMessage("Failure fetching customers");
             logger.severe("Failure fetching customers");
         }
-
         return responseModel;
     }
 

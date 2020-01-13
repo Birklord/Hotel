@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 public class CustomerCodeAndPaymentReferenceImpl implements CustomerCodeAndPaymentReferenceService {
     @Autowired
     private CustomerCodeAndPaymentReferenceRepository customerCodeAndPaymentReferenceRepository;
-    private CustomerCodeAndPaymentReference customerCodeAndPaymentReference;
     static Logger logger = Logger.getLogger(String.valueOf(CustomerCodeAndPaymentReference.class));
 
     @Override
@@ -43,6 +42,7 @@ public class CustomerCodeAndPaymentReferenceImpl implements CustomerCodeAndPayme
     }
 
     public void saveFromPayment(String customerCode, String payStackUniqueReference, String status) {
+        CustomerCodeAndPaymentReference customerCodeAndPaymentReference = new CustomerCodeAndPaymentReference();
         customerCodeAndPaymentReference.setCustomerCode(customerCode);
         customerCodeAndPaymentReference.setPayStackUniqueReference(payStackUniqueReference);
         customerCodeAndPaymentReference.setStatus(status);

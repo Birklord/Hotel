@@ -22,6 +22,9 @@ public class Payment {
     private Date transactionDate;
     private String transactionAmount;
     private String paystackAuthorizationUrl;
+    private String paystackStatus;
+    private String paystackMessage;
+    private String status;
     private String paystackAccessCode;
     private String paystackReference;
 

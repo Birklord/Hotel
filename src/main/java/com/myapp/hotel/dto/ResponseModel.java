@@ -1,10 +1,8 @@
 package com.myapp.hotel.dto;
 
-import com.myapp.hotel.model.Customer;
 import com.myapp.hotel.model.Room;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 @Data
 public class ResponseModel {

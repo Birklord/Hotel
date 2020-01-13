@@ -7,7 +7,7 @@ import com.myapp.hotel.model.Payment;
 import java.util.List;
 
 public interface PaymentService {
-    public Boolean addPayment(PaymentRequest paymentRequest);
+    public String addPayment(PaymentRequest paymentRequest);
     public PaymentRequest convertToDto(Payment payment);
     public BaseModel findPaymentById(Long id);
     List<BaseModel> findAllPayment();

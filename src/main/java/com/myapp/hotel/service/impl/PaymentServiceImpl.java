@@ -37,7 +37,7 @@ public  class PaymentServiceImpl implements PaymentService {
         this.mapper = mapper;
     }
     @Override
-    public Boolean addPayment(PaymentRequest paymentRequest) {
+    public String addPayment(PaymentRequest paymentRequest) {
         Payment payment = mapper.map(paymentRequest, Payment.class);
         Optional<Reservation> reservation = reservationServiceImpl.findReservationById(paymentRequest.getReservationId());
         Customer customer = customerServiceImpl.findCustomer(reservation.get().getCustomer().getId());
@@ -52,28 +52,34 @@ public  class PaymentServiceImpl implements PaymentService {
                 String paystackReference = (String) ((JSONObject) jsonObject.get("data")).get("reference");
                 String paystackAccessCode = (String) ((JSONObject) jsonObject.get("data")).get("access_code");
                 String paystackAuthorizationUrl = (String) ((JSONObject) jsonObject.get("data")).get("authorization_url");
-                String customerCode = String.valueOf(customer.getCustomerCode());
+                String paystackMessage = (String) (jsonObject.get("message"));
+                String paystackStatus = (String) jsonObject.get("status");
+
             try {
                 payment.setPaystackAuthorizationUrl(paystackAuthorizationUrl);
                 payment.setPaystackAccessCode(paystackAccessCode);
                 payment.setPaystackReference(paystackReference);
+                payment.setStatus(status);
                 paymentRepository.save(payment);
                 logger.info("success");
                 status = "s";
-
-                customerCodeAndPaymentReferenceImpl.saveFromPayment(customerCode, payStackUniqueReference, status);
-                saved= true;
-            } catch (Exception e) {
+               return "payment successful";
+            }
+            catch (Exception e) {
                 saved = false;
                 e.printStackTrace();
                 e.getMessage();
                 logger.severe("failed");
                 status= "f";
-                customerCodeAndPaymentReferenceImpl.saveFromPayment(customerCode, payStackUniqueReference, status);
+
+                payment.setPaystackMessage(paystackMessage);
+                payment.setPaystackStatus(paystackStatus);
+                payment.setStatus(status);
+                paymentRepository.save(payment);
+                return paystackMessage;
             }
-            return saved;
         }
-        return saved;
+        return null;
     }
 
     @Override

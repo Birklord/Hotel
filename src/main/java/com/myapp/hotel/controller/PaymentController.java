@@ -29,6 +29,7 @@ public class PaymentController {
         try {
             responseModel.setValid(true);
             responseModel.setResponseMessage(paymentService.addPayment(paymentRequest));
+            responseModel.setResponseCode("00");
             logger.info("Success");
         }
         catch (Exception e){

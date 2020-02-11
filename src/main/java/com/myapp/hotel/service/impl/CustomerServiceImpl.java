@@ -22,7 +22,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     private  CustomerRepository customerRepository;
     private Customers customers;
-    private Customer customer;
     private final Mapper mapper;
     static Logger logger = Logger.getLogger(String.valueOf(CustomerServiceImpl.class));
 

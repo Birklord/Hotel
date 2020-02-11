@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Data
 @Entity
@@ -19,10 +18,10 @@ public class Payment {
 
     @NotNull
     private Long customerId;
-    private Date transactionDate;
+    private String transactionDate;
     private String transactionAmount;
     private String paystackAuthorizationUrl;
-    private String paystackStatus;
+    private Boolean paystackStatus;
     private String paystackMessage;
     private String status;
     private String paystackAccessCode;
